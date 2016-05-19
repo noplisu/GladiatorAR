@@ -6,13 +6,16 @@ public class Health : MonoBehaviour {
     public int amount = 40;
     public bool startAttack = false;
     public bool finishAttack = false;
+    public GameObject troll;
     
     Animator anim;
+    MeshRenderer rend;
     Health oponentHealth;
 
     void Start()
     {
         anim = this.GetComponent<Animator>();
+        rend = this.GetComponent<MeshRenderer>();
     }
 
     public bool alive()
@@ -63,6 +66,16 @@ public class Health : MonoBehaviour {
         else
         {
             anim.SetBool("Dead", true);
+            StartCoroutine(die());
         }
+    }
+
+    public IEnumerator die()
+    {
+        yield return new WaitForSeconds(3);
+        rend.enabled = false;
+        yield return new WaitForSeconds(3);
+        Instantiate(troll, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 }
